@@ -51,9 +51,15 @@ function cssModule() {
 	  return config;
 	};
 }
+function chunkFilename() {
+	return function(config, env) {
+		config.output.chunkFilename = 'static/js/[name].[chunkhash:8].js'
+	  return config;
+	}
+}
 module.exports = function override(config, env) {
 	// do stuff with the webpack config...
-	config = injectBabelPlugin(['import', { libraryName: 'antd', style: true }], config);
+	config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }], config);
 	config = injectBabelPlugin("transform-runtime", config);
 	config = injectBabelPlugin("syntax-dynamic-import", config);
 	if (env === "development") {
@@ -62,6 +68,7 @@ module.exports = function override(config, env) {
 	config = rewireLess.withLoaderOptions({
 	   modifyVars: { "@primary-color": "#1DA57A" },
 	})(config, env);
-	config = cssModule()(config, env);
+	// config = cssModule()(config, env);
+	config = chunkFilename()(config, env);
 	return config;
 };

@@ -5,15 +5,15 @@ import dynamic from 'dva/dynamic';
 function RouterConfig({ history, app }) {
   const IndexPage = dynamic({
     app,
-    component: () => import('./routes/IndexPage'),
+    component: () => import(/* webpackChunkName: "IndexPage" */ './routes/IndexPage'),
   });
 
   const Users = dynamic({
     app,
     models: () => [
-      import('./models/users'),
+      import(/* webpackChunkName: "usersmodel" */'./models/users'),
     ],
-    component: () => import('./routes/Users'),
+    component: () => import(/* webpackChunkName: "Users" */'./routes/Users'),
   });
 
   return (
