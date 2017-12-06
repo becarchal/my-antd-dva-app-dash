@@ -60,15 +60,14 @@ function chunkFilename() {
 module.exports = function override(config, env) {
 	// do stuff with the webpack config...
 	config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }], config);
-	config = injectBabelPlugin("transform-runtime", config);
-	config = injectBabelPlugin("syntax-dynamic-import", config);
+	config = injectBabelPlugin("react-require", config); // 针对stateless 组件
 	if (env === "development") {
-		config = injectBabelPlugin("dva-hmr", config);
+		config = injectBabelPlugin("dva-hmr", config); // dva动态更新
 	}
 	config = rewireLess.withLoaderOptions({
 	   modifyVars: { "@primary-color": "#1DA57A" },
 	})(config, env);
-	// config = cssModule()(config, env);
 	config = chunkFilename()(config, env);
+	config = cssModule()(config, env);
 	return config;
 };
